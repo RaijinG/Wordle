@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Wordle</string>
+    <string name="play">PLAY</string>
+    <string name="how_to_play">HOW TO PLAY</string>
+    <string name="settings">SETTINGS</string>
+    <string name="android_word">Android</string>
+</resources>
