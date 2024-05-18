@@ -1,5 +1,6 @@
 package com.example.wordle
 
+import GameModeSelection
 import HowToPlayDisplay
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,9 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.wordle.ui.MainPage
-import com.example.wordle.ui.WordDisplay
-import com.example.wordle.ui.readWordsFromFile
 import com.example.wordle.ui.theme.WordleTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,17 +21,27 @@ class MainActivity : ComponentActivity() {
                     composable("mainPage") {
                         MainPage(
                             onPlayClicked = {
-                                val words = readWordsFromFile(resources)
-                                navController.navigate("wordDisplay/${words.random()}")
+                                navController.navigate("gameModeSelection")
                             },
                             onHowToPlayClicked = {
                                 navController.navigate("howToPlay")
                             }
                         )
                     }
-                    composable("wordDisplay/{word}") { backStackEntry ->
+                    composable("gameModeSelection") {
+                        GameModeSelection(
+                            navController = navController,
+                            onGameModeSelected = { gameMode, difficulty ->
+                                val words = readWordsFromFile(resources)
+                                navController.navigate("wordDisplay/${words.random()}?gameMode=$gameMode&difficulty=$difficulty")
+                            }
+                        )
+                    }
+                    composable("wordDisplay/{word}?gameMode={gameMode}&difficulty={difficulty}") { backStackEntry ->
                         val word = backStackEntry.arguments?.getString("word") ?: ""
-                        WordDisplay(word = word)
+                        val gameMode = backStackEntry.arguments?.getString("gameMode") ?: getString(R.string.classic)
+                        val difficulty = backStackEntry.arguments?.getString("difficulty") ?: getString(R.string.normal)
+                        WordDisplay(word = word, gameMode = gameMode, difficulty = difficulty)
                     }
                     composable("howToPlay") {
                         HowToPlayDisplay("hovnisko")
@@ -43,4 +51,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-

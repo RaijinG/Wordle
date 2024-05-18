@@ -1,7 +1,32 @@
 <resources>
     <string name="app_name">Wordle</string>
+
     <string name="play">PLAY</string>
     <string name="how_to_play">HOW TO PLAY</string>
     <string name="settings">SETTINGS</string>
+
     <string name="android_word">Android</string>
+
+    <string name="game_mode">GAME MODE</string>
+    <string name="classic">CLASSIC</string>
+    <string name="classic_description">This mode follows the traditional Wordle format where players have attempts depending on difficulty to guess the hidden word correctly.
+        Each correct guess reveals the position of the letters in the word with color-coding.</string>
+    <string name="infinite">INFINITE</string>
+    <string name="infinite_description">In this mode, players can keep guessing words continuously until they do not succeed.
+        Score is accumulated with each correct guess, and theres no limit to the number of words you can guess</string>
+    <string name="number">NUMBER</string>
+    <string name="number_description">Similar to Classic Wordle, but without color-highlighted letters.
+        Instead, players receive feedback in the form of the number of letters guessed correctly and the number of those letters correctly positioned.</string>
+
+    <string name="difficulty">DIFFICULTY</string>
+    <string name="normal">NORMAL</string>
+    <string name="normal_description">Players have six rows to guess the word, similar to the Classic setup.
+        This mode provides a balanced challenge suitable for most players.</string>
+    <string name="hard">HARD</string>
+    <string name="hard_description">With only five rows available for guessing, Hard mode increases the challenge by reducing the number of attempts.
+        Players need to be more strategic and accurate with their guesses to succeed.</string>
+    <string name="extreme">EXTREME</string>
+    <string name="extreme_description">Extreme mode offers the toughest challenge with only four rows for guessing.
+        It demands precision and careful deduction as players have fewer attempts to decipher the hidden word.</string>
+    <string name="start_game">START GAME</string>
 </resources>
