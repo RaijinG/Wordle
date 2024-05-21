@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
                         WordDisplay(word = word, gameMode = gameMode, difficulty = difficulty)
                     }
                     composable("howToPlay") {
-                        HowToPlayDisplay("hovnisko")
+                        HowToPlayDisplay()
                     }
                 }
             }

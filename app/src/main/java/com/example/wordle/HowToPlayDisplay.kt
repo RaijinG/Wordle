@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.example.wordle.R
 
 @Composable
-fun HowToPlayDisplay(text: String, modifier: Modifier = Modifier) {
+fun HowToPlayDisplay(modifier: Modifier = Modifier) {
     Surface(
         color = Color(0xFF545454),
         modifier = modifier.fillMaxSize()
