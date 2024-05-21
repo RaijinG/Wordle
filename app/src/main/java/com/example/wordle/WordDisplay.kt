@@ -15,8 +15,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,15 +29,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavController
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
 @Composable
-fun WordDisplay(word: String, gameMode: String, difficulty: String, modifier: Modifier = Modifier) {
+fun WordDisplay(word: String, gameMode: String, difficulty: String, navController: NavController, modifier: Modifier = Modifier) {
     val maxGuesses = when (difficulty) {
         stringResource(id = R.string.hard) -> 5
         stringResource(id = R.string.extreme) -> 4
@@ -44,6 +48,8 @@ fun WordDisplay(word: String, gameMode: String, difficulty: String, modifier: Mo
 
     var guesses by remember { mutableStateOf(List(maxGuesses) { "" }) }
     var currentGuess by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Surface(
         color = Color(0xFF545454),
@@ -88,7 +94,7 @@ fun WordDisplay(word: String, gameMode: String, difficulty: String, modifier: Mo
                                 modifier = Modifier
                                     .size(48.dp)
                                     .border(1.dp, Color.White)
-                                    .background(color1)
+                                    .background(color1),
                             ) {
                                 Text(text = char.toString(), color = Color.DarkGray, fontSize = 24.sp)
                             }
@@ -107,6 +113,11 @@ fun WordDisplay(word: String, gameMode: String, difficulty: String, modifier: Mo
                         if (guesses.contains("")) {
                             val index = guesses.indexOfFirst { it.isEmpty() }
                             guesses = guesses.toMutableList().also { it[index] = currentGuess }
+
+                            if (currentGuess.equals(word, ignoreCase = true)) {
+                                showDialog = true
+                            }
+
                             currentGuess = ""
                         }
                     } else if (key == "DELETE") {
@@ -118,6 +129,66 @@ fun WordDisplay(word: String, gameMode: String, difficulty: String, modifier: Mo
                     }
                 }
             )
+        }
+    }
+
+    if (showDialog && gameMode == stringResource(id = R.string.classic)) {
+        val words = remember { readWordsFromFile(context.resources) }
+        CongratulationDialog(
+            onMainMenu = { navController.navigate("mainPage") },
+            onNext = {
+                navController.navigate("wordDisplay/${words.random()}?gameMode=$gameMode&difficulty=$difficulty") {
+                    popUpTo("wordDisplay/{word}?gameMode={gameMode}&difficulty={difficulty}") { inclusive = true }
+                }
+            }
+        )
+    }
+}
+
+@Composable
+fun CongratulationDialog(onMainMenu: () -> Unit, onNext: () -> Unit) {
+    Dialog(onDismissRequest = {}) {
+        Surface(
+            shape = RoundedCornerShape(5.dp),
+            color = MaterialTheme.colorScheme.surface,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = "Congratulations!")
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "You guessed the word correctly!")
+                Spacer(modifier = Modifier.height(24.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(
+                        onClick = onMainMenu,
+                        modifier = Modifier
+                            .padding(vertical = 10.dp),
+                        shape = RoundedCornerShape(5.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF424141),
+                            contentColor = Color.White
+                        )) {
+                        Text(text = "MAIN MENU")
+                    }
+                    Button(
+                        onClick = onNext,
+                        modifier = Modifier
+                            .padding(vertical = 10.dp),
+                        shape = RoundedCornerShape(5.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF424141),
+                            contentColor = Color.White
+                        )) {
+                        Text(text = "NEXT")
+                    }
+                }
+            }
         }
     }
 }
@@ -150,16 +221,19 @@ fun Keyboard(onKeyPressed: (String) -> Unit) {
 
 @Composable
 fun Key(label: String, onKeyPressed: (String) -> Unit) {
-    val keyWidth = if (label == "SUBMIT" || label == "DELETE") 90.dp else 34.dp
+    val keyWidth = if (label == "SUBMIT" || label == "DELETE") 110.dp else 34.dp
+    val color = if (label == "SUBMIT") 0xFF32f0ef
+    else if (label == "DELETE") 0xFFfa0907
+    else 0xFFffffff
     Button(
         onClick = { onKeyPressed(label) },
         modifier = Modifier
             .padding(2.dp)
             .width(keyWidth)
             .height(60.dp),
-        shape = RectangleShape,
+        shape = RoundedCornerShape(5.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Gray,
+            containerColor = Color(color),
             contentColor = Color.White
         ),
         contentPadding = PaddingValues(0.dp)
@@ -171,7 +245,7 @@ fun Key(label: String, onKeyPressed: (String) -> Unit) {
             Text(
                 text = label,
                 fontSize = 22.sp,
-                color = Color.White
+                color = Color.Black
             )
         }
     }

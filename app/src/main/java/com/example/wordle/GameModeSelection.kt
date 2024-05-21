@@ -61,7 +61,7 @@ fun GameModeSelection(
                     .fillMaxWidth(0.8f),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (selectedGameMode == R.string.classic) Color(0xFF32f0ef) else Color(0xFF424141),
-                    contentColor = Color.White
+                    contentColor = if (selectedGameMode == R.string.classic) Color.Black else Color.White,
                 )
             ) {
                 Text(text = stringResource(id = R.string.classic))
@@ -73,7 +73,7 @@ fun GameModeSelection(
                     .fillMaxWidth(0.8f),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (selectedGameMode == R.string.infinite) Color(0xFF32f0ef) else Color(0xFF424141),
-                    contentColor = Color.White
+                    contentColor = if (selectedGameMode == R.string.infinite) Color.Black else Color.White
                 )
             ) {
                 Text(text = stringResource(id = R.string.infinite))
@@ -85,7 +85,7 @@ fun GameModeSelection(
                     .fillMaxWidth(0.8f),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (selectedGameMode == R.string.number) Color(0xFF32f0ef) else Color(0xFF424141),
-                    contentColor = Color.White
+                    contentColor = if (selectedGameMode == R.string.number) Color.Black else Color.White
                 )
             ) {
                 Text(text = stringResource(id = R.string.number))
@@ -111,7 +111,7 @@ fun GameModeSelection(
                         RadioButton(
                             selected = selectedDifficulty == difficulty,
                             onClick = { selectedDifficulty = difficulty },
-                            colors = RadioButtonDefaults.colors(selectedColor = Color(0xFF32f0ef))
+                            colors = RadioButtonDefaults.colors(selectedColor = Color(0xFF32f0ef), unselectedColor = Color.White)
                         )
                         Text(
                             text = stringResource(id = difficulty),
@@ -136,7 +136,7 @@ fun GameModeSelection(
                     .fillMaxWidth(0.8f),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF32f0ef),
-                    contentColor = Color.White
+                    contentColor = Color.Black
                 )
             ) {
                 Text(text = stringResource(id = R.string.start_game))

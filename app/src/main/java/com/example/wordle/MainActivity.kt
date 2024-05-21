@@ -33,7 +33,11 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             onGameModeSelected = { gameMode, difficulty ->
                                 val words = readWordsFromFile(resources)
-                                navController.navigate("wordDisplay/${words.random()}?gameMode=$gameMode&difficulty=$difficulty")
+                                navController.navigate("wordDisplay/${words.random()}?gameMode=$gameMode&difficulty=$difficulty") {
+                                    popUpTo("gameModeSelection") { saveState = true }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
                             }
                         )
                     }
@@ -41,7 +45,7 @@ class MainActivity : ComponentActivity() {
                         val word = backStackEntry.arguments?.getString("word") ?: ""
                         val gameMode = backStackEntry.arguments?.getString("gameMode") ?: getString(R.string.classic)
                         val difficulty = backStackEntry.arguments?.getString("difficulty") ?: getString(R.string.normal)
-                        WordDisplay(word = word, gameMode = gameMode, difficulty = difficulty)
+                        WordDisplay(word = word, gameMode = gameMode, difficulty = difficulty, navController = navController)
                     }
                     composable("howToPlay") {
                         HowToPlayDisplay()
