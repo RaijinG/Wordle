@@ -23,12 +23,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.wordle.R
 
 @Composable
 fun GameModeSelection(
-    navController: NavController,
     onGameModeSelected: (String, String) -> Unit
 ) {
     var selectedGameMode by remember { mutableStateOf(R.string.classic) }
@@ -48,10 +46,7 @@ fun GameModeSelection(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = stringResource(id = R.string.game_mode),
-                color = Color.White
-            )
+            HeaderSection(text = stringResource(id = R.string.game_mode))
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(
@@ -94,10 +89,7 @@ fun GameModeSelection(
             Spacer(modifier = Modifier.height(20.dp))
 
             if (selectedGameMode != R.string.number) {
-                Text(
-                    text = stringResource(id = R.string.difficulty),
-                    color = Color.White
-                )
+                HeaderSection(text = stringResource(id = R.string.difficulty))
                 Spacer(modifier = Modifier.height(10.dp))
 
                 val difficulties = listOf(R.string.normal, R.string.hard, R.string.extreme)

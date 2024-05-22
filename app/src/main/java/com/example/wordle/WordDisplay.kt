@@ -1,5 +1,7 @@
 package com.example.wordle
 
+import HeaderSectionDifficulty
+import HeaderSectionGamemode
 import android.content.res.Resources
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,16 +41,26 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 @Composable
-fun WordDisplay(word: String, gameMode: String, difficulty: String, navController: NavController, modifier: Modifier = Modifier) {
+fun WordDisplay(word: String, gameMode: String, difficulty: String, navController: NavController, modifier: Modifier = Modifier, initialScore: Int = 0) {
     val maxGuesses = when (difficulty) {
         stringResource(id = R.string.hard) -> 5
         stringResource(id = R.string.extreme) -> 4
         else -> 6
     }
+    val difficultyMultiplier = when (difficulty) {
+        stringResource(id = R.string.hard) -> 2
+        stringResource(id = R.string.extreme) -> 3
+        else -> 1
+    }
+    val numberGameMode = stringResource(id = R.string.number)
+    val infiniteGameMode = stringResource(id = R.string.infinite)
 
     var guesses by remember { mutableStateOf(List(maxGuesses) { "" }) }
     var currentGuess by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
+    var correctPositions by remember { mutableStateOf(List(maxGuesses) { 0 }) }
+    var misplacedCounts by remember { mutableStateOf(List(maxGuesses) { 0 }) }
+    var score by remember { mutableStateOf(initialScore) }
     val context = LocalContext.current
 
     Surface(
@@ -61,32 +73,60 @@ fun WordDisplay(word: String, gameMode: String, difficulty: String, navControlle
             verticalArrangement = Arrangement.Center
         ) {
             Text(text = "Word: $word", color = Color.White)
-            Text(text = "Game Mode: $gameMode", color = Color.White)
-            Text(text = "Difficulty: $difficulty", color = Color.White)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                HeaderSectionGamemode(text = "$gameMode")
+                HeaderSectionDifficulty(text = "$difficulty")
+            }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(5.dp))
+            if (gameMode == infiniteGameMode) {
+                Text(text = "Score: $score", color = Color.White, fontSize = 24.sp)
+            }
+            Spacer(modifier = Modifier.height(5.dp))
 
             Column {
                 for (i in guesses.indices) {
                     val guess = if (i == guesses.indexOfFirst { it.isEmpty() }) currentGuess else guesses[i]
+                    val correctPositionCount = if (gameMode == numberGameMode && guess.isNotEmpty()) correctPositions[i] else 0
+                    val misplacedCount = if (gameMode == numberGameMode && guess.isNotEmpty()) misplacedCounts[i] else 0
+                    val isCurrentRow = i == guesses.indexOfFirst { it.isEmpty() }
+
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth()
                     ) {
+                        if (gameMode == numberGameMode) {
+                            Text(
+                                text = correctPositionCount.toString(),
+                                color = Color(0xFF79D91F),
+                                fontSize = 32.sp,
+                                modifier = Modifier
+                                    .padding(end = 14.dp)
+                            )
+                        }
                         for ((index, char) in guess.lowercase().padEnd(5).withIndex()) {
-                            val color1 = if (i == guesses.indexOfFirst { it.isEmpty() }) {
-                                Color.LightGray
+                            val color1 = if (isCurrentRow) {
+                                Color(0xFFA09E9B)
                             } else {
-                                when {
-                                    word.getOrNull(index)?.equals(char) == true -> {
-                                        Color(0xFF79D91F)
+                                if (gameMode != numberGameMode) {
+                                    when {
+                                        word.getOrNull(index)?.equals(char) == true -> {
+                                            Color(0xFF79D91F)
+                                        }
+                                        char in word -> {
+                                            Color(0xFFD6D91F)
+                                        }
+                                        else -> {
+                                            Color.LightGray
+                                        }
                                     }
-                                    char in word -> {
-                                        Color(0xFFD6D91F)
-                                    }
-                                    else -> {
-                                        Color(0xFFA09E9B)
-                                    }
+                                } else {
+                                    Color.LightGray
                                 }
                             }
                             Box(
@@ -100,12 +140,21 @@ fun WordDisplay(word: String, gameMode: String, difficulty: String, navControlle
                             }
                             Spacer(modifier = Modifier.width(4.dp))
                         }
+
+                        if (gameMode == numberGameMode) {
+                            Text(
+                                text = misplacedCount.toString(),
+                                color = Color(0xFFD6D91F),
+                                fontSize = 32.sp,
+                                modifier = Modifier.padding(start = 12.dp)
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                 }
             }
 
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(15.dp))
 
             Keyboard(
                 onKeyPressed = { key ->
@@ -115,7 +164,18 @@ fun WordDisplay(word: String, gameMode: String, difficulty: String, navControlle
                             guesses = guesses.toMutableList().also { it[index] = currentGuess }
 
                             if (currentGuess.equals(word, ignoreCase = true)) {
+                                val unusedRows = guesses.count { it.isEmpty() }
+                                score += 1 + (unusedRows * difficultyMultiplier)
                                 showDialog = true
+                            }
+
+                            if (gameMode == numberGameMode) {
+                                correctPositions = correctPositions.toMutableList().also {
+                                    it[index] = countCorrectPositions(word, currentGuess)
+                                }
+                                misplacedCounts = misplacedCounts.toMutableList().also {
+                                    it[index] = countMisplacedLetters(word, currentGuess)
+                                }
                             }
 
                             currentGuess = ""
@@ -132,17 +192,36 @@ fun WordDisplay(word: String, gameMode: String, difficulty: String, navControlle
         }
     }
 
-    if (showDialog && gameMode == stringResource(id = R.string.classic)) {
+    if (showDialog) {
         val words = remember { readWordsFromFile(context.resources) }
         CongratulationDialog(
             onMainMenu = { navController.navigate("mainPage") },
             onNext = {
-                navController.navigate("wordDisplay/${words.random()}?gameMode=$gameMode&difficulty=$difficulty") {
+                val nextScore = if (gameMode == infiniteGameMode) score else 0
+                navController.navigate("wordDisplay/${words.random()}?gameMode=$gameMode&difficulty=$difficulty&score=$nextScore") {
                     popUpTo("wordDisplay/{word}?gameMode={gameMode}&difficulty={difficulty}") { inclusive = true }
                 }
             }
         )
     }
+}
+
+private fun countCorrectPositions(word: String, guess: String): Int {
+    return guess.indices.count { index -> word.getOrNull(index)?.equals(guess[index], ignoreCase = true) == true }
+}
+
+private fun countMisplacedLetters(word: String, guess: String): Int {
+    val wordCharCounts = word.groupBy { it }.mapValues { it.value.size }.toMutableMap()
+    var misplacedCount = 0
+    guess.forEachIndexed { index, c ->
+        if (c.lowercaseChar() in word && c.lowercaseChar() != word.getOrNull(index)) {
+            if (wordCharCounts[c.lowercaseChar()]!! > 0) {
+                misplacedCount++
+                wordCharCounts[c.lowercaseChar()] = wordCharCounts[c.lowercaseChar()]!! - 1
+            }
+        }
+    }
+    return misplacedCount
 }
 
 @Composable
@@ -173,7 +252,8 @@ fun CongratulationDialog(onMainMenu: () -> Unit, onNext: () -> Unit) {
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF424141),
                             contentColor = Color.White
-                        )) {
+                        )
+                    ) {
                         Text(text = "MAIN MENU")
                     }
                     Button(
@@ -184,7 +264,8 @@ fun CongratulationDialog(onMainMenu: () -> Unit, onNext: () -> Unit) {
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF424141),
                             contentColor = Color.White
-                        )) {
+                        )
+                    ) {
                         Text(text = "NEXT")
                     }
                 }
@@ -260,4 +341,3 @@ fun readWordsFromFile(resources: Resources): List<String> {
     }
     return words
 }
-
