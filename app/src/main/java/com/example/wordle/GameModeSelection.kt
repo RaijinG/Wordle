@@ -46,7 +46,7 @@ fun GameModeSelection(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            HeaderSection(text = stringResource(id = R.string.game_mode))
+            ImageGamemode()
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(
@@ -89,7 +89,7 @@ fun GameModeSelection(
             Spacer(modifier = Modifier.height(20.dp))
 
             if (selectedGameMode != R.string.number) {
-                HeaderSection(text = stringResource(id = R.string.difficulty))
+                ImageDifficulty()
                 Spacer(modifier = Modifier.height(10.dp))
 
                 val difficulties = listOf(R.string.normal, R.string.hard, R.string.extreme)

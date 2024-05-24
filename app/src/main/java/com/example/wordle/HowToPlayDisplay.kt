@@ -1,4 +1,5 @@
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -77,7 +80,7 @@ fun HeaderSection(text: String) {
     }
 }
 @Composable
-fun HeaderSectionGamemode(text: String) {
+fun HeaderGamemode(text: String) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -102,7 +105,7 @@ fun HeaderSectionGamemode(text: String) {
     }
 }
 @Composable
-fun HeaderSectionDifficulty(text: String) {
+fun HeaderDifficulty(text: String) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -126,58 +129,50 @@ fun HeaderSectionDifficulty(text: String) {
         )
     }
 }
-
+@Composable
+fun ImageGamemode() {
+    Image(
+        painter = painterResource(id = R.drawable.wordlegamemode),
+        contentDescription = stringResource(id = R.string.app_name),
+        modifier = Modifier.height(110.dp).size(300.dp)
+    )
+}
+@Composable
+fun ImageDifficulty() {
+    Image(
+        painter = painterResource(id = R.drawable.wordledifficulty),
+        contentDescription = stringResource(id = R.string.app_name),
+        modifier = Modifier.height(110.dp).size(300.dp)
+    )
+}
 @Composable
 fun GameModeSection() {
-    HeaderSection(text = stringResource(id = R.string.game_mode))
+    ImageGamemode()
     Spacer(modifier = Modifier.height(8.dp))
 
-    GameModeCard(title = stringResource(id = R.string.classic), description = stringResource(id = R.string.classic_description))
-    GameModeCard(title = stringResource(id = R.string.infinite), description = stringResource(id = R.string.infinite_description))
-    GameModeCard(title = stringResource(id = R.string.number), description = stringResource(id = R.string.number_description))
+    TextCard(title = stringResource(id = R.string.classic),
+        description = stringResource(id = R.string.classic_description))
+    TextCard(title = stringResource(id = R.string.infinite),
+        description = stringResource(id = R.string.infinite_description))
+    TextCard(title = stringResource(id = R.string.number),
+        description = stringResource(id = R.string.number_description))
 }
 
 @Composable
 fun DifficultySection() {
-    HeaderSection(text = stringResource(id = R.string.difficulty))
+    ImageDifficulty()
     Spacer(modifier = Modifier.height(8.dp))
 
-    DifficultyCard(title = stringResource(id = R.string.normal), description = stringResource(id = R.string.normal_description))
-    DifficultyCard(title = stringResource(id = R.string.hard), description = stringResource(id = R.string.hard_description))
-    DifficultyCard(title = stringResource(id = R.string.extreme), description = stringResource(id = R.string.extreme_description))
+    TextCard(title = stringResource(id = R.string.normal),
+        description = stringResource(id = R.string.normal_description))
+    TextCard(title = stringResource(id = R.string.hard),
+        description = stringResource(id = R.string.hard_description))
+    TextCard(title = stringResource(id = R.string.extreme),
+        description = stringResource(id = R.string.extreme_description))
 }
 
 @Composable
-fun GameModeCard(title: String, description: String) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF424141)
-        )
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = title,
-                color = Color(0xFF32f0ef),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            Text(
-                text = description,
-                color = Color.White,
-                fontSize = 18.sp
-            )
-        }
-    }
-}
-
-@Composable
-fun DifficultyCard(title: String, description: String) {
+fun TextCard(title: String, description: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

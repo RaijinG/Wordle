@@ -17,7 +17,10 @@ class MainActivity : ComponentActivity() {
             WordleTheme {
                 val navController = rememberNavController()
 
-                NavHost(navController, startDestination = "mainPage") {
+                NavHost(navController, startDestination = "splashScreen") {
+                    composable("splashScreen") {
+                        SplashScreen(navController)
+                    }
                     composable("mainPage") {
                         MainPage(
                             onPlayClicked = {
