@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="classic">CLASSIQUE</string>
+    <string name="classic_description">"Ce mode suit le format Wordle traditionnel dans lequel les joueurs doivent tenter, en fonction de la difficulté, de deviner correctement le mot caché. Chaque réponse correcte révèle la position des lettres dans le mot avec un code couleur. "</string>
+    <string name="infinite">INFINI</string>
+    <string name="infinite_description">"Dans ce mode, les joueurs peuvent continuer à deviner les mots en continu jusqu'à ce qu'ils ne réussissent pas. Le score est accumulé à chaque réponse correcte, et il n'y a pas de limite au nombre de mots que vous pouvez deviner. "</string>
+    <string name="number">NOMBRE</string>
+    <string name="number_description">"Semblable à Classic Wordle, mais sans lettres surlignées en couleur. Au lieu de cela, les joueurs reçoivent des commentaires sous la forme du nombre de lettres correctement devinées et du nombre de ces lettres correctement positionnées. "</string>
+    <string name="difficulty">DIFFICULTÉ</string>
+    <string name="normal">NORMALE</string>
+    <string name="normal_description">"Les joueurs disposent de six rangées pour deviner le mot, similaire à la configuration classique. Ce mode propose un défi équilibré adapté à la plupart des joueurs. "</string>
+    <string name="hard">DUR</string>
+    <string name="hard_description">"Avec seulement cinq lignes disponibles pour deviner, le mode Difficile augmente le défi en réduisant le nombre de tentatives. Les joueurs doivent être plus stratégiques et plus précis dans leurs suppositions pour réussir. "</string>
+    <string name="extreme">EXTRÊME</string>
+    <string name="extreme_description">"Le mode Extrême offre le défi le plus difficile avec seulement quatre lignes à deviner. Cela exige de la précision et une déduction minutieuse car les joueurs ont moins de tentatives pour déchiffrer le mot caché. "</string>
+    <string name="start_game">"DÉMARRER JEU "</string>
+    <string name="congratulations">"Toutes nos félicitations! "</string>
+    <string name="dialog_congratulations">"Vous avez bien deviné le mot ! "</string>
+    <string name="next">SUIVANT</string>
+    <string name="try_again">"Essayer à nouveau! "</string>
+    <string name="dialog_failure">"Vous n'avez pas deviné le mot. Plus de chance la prochaine fois! "</string>
+    <string name="retry">RECOMMENCEZ</string>
+    <string name="main_menu">MENU</string>
+    <string name="play">JOUER</string>
+    <string name="how_to_play">"COMMENT JOUER "</string>
+    <string name="settings">"PARAMÈTRES "</string>
+    <string name="game_mode">"MODE DE JEU "</string>
+    <string name="dark_theme">"THÈME SOMBRE "</string>
+    <string name="language">LANGUE</string>
+    <string name="enable_notifications">"ACTIVER LES NOTIFICATIONS "</string>
+    <string name="reset_highscore">"RÉINITIALISER LE SCORE ÉLEVÉ "</string>
+    <string name="clear_progress">"Cela effacera tous vos progrès et votre score. "</string>
+    <string name="reset">RÉINITIALISER</string>
+    <string name="reset_progress">"Êtes-vous sûr de vouloir réinitialiser toute votre progression ? "</string>
+    <string name="cancel">ANNULER</string>
+    <string name="yes">OUI</string>
+</resources>

@@ -1,4 +1,4 @@
-package com.example.wordle
+package com.example.wordle.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

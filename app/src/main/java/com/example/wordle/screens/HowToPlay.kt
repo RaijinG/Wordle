@@ -1,4 +1,4 @@
-
+package com.example.wordle.screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.wordle.HeaderImage
+import com.example.wordle.util.HeaderImage
 import com.example.wordle.R
 
 @Composable

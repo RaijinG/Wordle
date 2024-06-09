@@ -1,7 +1,5 @@
 package com.example.wordle
 
-import GameModeSelection
-import HowToPlayDisplay
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,10 +11,22 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
+import com.example.wordle.data.AppDatabase
+import com.example.wordle.data.HighScore
+import com.example.wordle.data.Settings
+import com.example.wordle.screens.GameModeSelection
+import com.example.wordle.screens.HowToPlayDisplay
+import com.example.wordle.screens.MainPage
+import com.example.wordle.screens.SettingsDisplay
+import com.example.wordle.screens.SplashScreen
+import com.example.wordle.screens.WordDisplay
 import com.example.wordle.ui.theme.WordleTheme
+import com.example.wordle.util.ResetGameDataDialog
+import com.example.wordle.util.readWordsFromFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     private lateinit var db: AppDatabase
@@ -24,10 +34,23 @@ class MainActivity : ComponentActivity() {
     private var isDarkTheme by mutableStateOf(false)
     private var selectedLanguage by mutableStateOf("English")
     private var areNotificationsEnabled by mutableStateOf(true)
+    private var showResetDialog by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        fun updateLocale(language: String) {
+            val locale = when (language) {
+                "Spanish" -> Locale("es")
+                "French" -> Locale("fr")
+                "German" -> Locale("de")
+                else -> Locale("en")
+            }
+            Locale.setDefault(locale)
+            val config = resources.configuration
+            config.setLocale(locale)
+            resources.updateConfiguration(config, resources.displayMetrics)
+        }
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "wordle-database-v2"
@@ -37,12 +60,22 @@ class MainActivity : ComponentActivity() {
             val settings = retrieveSettings()
             isDarkTheme = settings.isDarkTheme
             selectedLanguage = settings.selectedLanguage
+            updateLocale(selectedLanguage)
             areNotificationsEnabled = settings.areNotificationsEnabled
         }
+
 
         setContent {
             WordleTheme(darkTheme = isDarkTheme) {
                 val navController = rememberNavController()
+
+                if (showResetDialog) {
+                    ResetGameDataDialog(
+                        onConfirm = { resetGameData()
+                            showResetDialog = false},
+                        onCancel = { showResetDialog = false }
+                    )
+                }
 
                 NavHost(navController, startDestination = "splashScreen") {
                     composable("splashScreen") {
@@ -102,13 +135,14 @@ class MainActivity : ComponentActivity() {
                             onLanguageChange = { language ->
                                 selectedLanguage = language
                                 saveSettings(selectedLanguage = language)
+                                updateLocale(language)
                             },
                             areNotificationsEnabled = areNotificationsEnabled,
                             onNotificationsToggle = { enabled ->
                                 areNotificationsEnabled = enabled
                                 saveSettings(notificationsEnabled = enabled)
                             },
-                            onResetGameData = { resetGameData() }
+                            onResetGameData = { showResetDialog = true }
                         )
                     }
                 }
@@ -159,4 +193,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
 

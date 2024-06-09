@@ -22,7 +22,7 @@ private val LightColorPalette = lightColorScheme(
     tertiary = Color(0xFF383838),
     onPrimary = Color(0xFF952928),
     onTertiary = Color.White,
-    background = Color(0xFFDAD7D3)
+    background = Color(0xFFABA7A7)
 )
 @Composable
 fun WordleTheme(

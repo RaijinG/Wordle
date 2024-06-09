@@ -1,4 +1,4 @@
-package com.example.wordle
+package com.example.wordle.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,9 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -31,8 +28,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
+import com.example.wordle.R
+import com.example.wordle.util.CongratulationDialog
+import com.example.wordle.util.FailureDialog
+import com.example.wordle.util.HeaderText
+import com.example.wordle.util.Keyboard
+import com.example.wordle.util.countCorrectPositions
+import com.example.wordle.util.countMisplacedLetters
+import com.example.wordle.util.readWordsFromFile
 
 @Composable
 fun WordDisplay(word: String,
@@ -96,8 +100,8 @@ fun WordDisplay(word: String,
 
                 Spacer(modifier = Modifier.height(5.dp))
                 if (gameMode == infiniteGameMode) {
-                    Text(text = "Score: $score", color = Color.White, fontSize = 24.sp)
-                    Text(text = "High Score: $highScore", color = Color.White, fontSize = 24.sp)
+                    Text(text = "Score: $score", color = MaterialTheme.colorScheme.tertiary, fontSize = 24.sp)
+                    Text(text = "High Score: $highScore", color = MaterialTheme.colorScheme.tertiary, fontSize = 24.sp)
                 }
                 Spacer(modifier = Modifier.height(5.dp))
 
@@ -229,129 +233,5 @@ fun WordDisplay(word: String,
             },
             onMainMenu = { navController.navigate("mainPage") }
         )
-    }
-}
-
-
-private fun countCorrectPositions(word: String, guess: String): Int {
-    return guess.indices.count { index -> word.getOrNull(index)?.equals(guess[index], ignoreCase = true) == true }
-}
-
-private fun countMisplacedLetters(word: String, guess: String): Int {
-    val wordCharCounts = word.groupBy { it }.mapValues { it.value.size }.toMutableMap()
-    var misplacedCount = 0
-    guess.forEachIndexed { index, c ->
-        if (c.lowercaseChar() in word && c.lowercaseChar() != word.getOrNull(index)) {
-            if (wordCharCounts[c.lowercaseChar()]!! > 0) {
-                misplacedCount++
-                wordCharCounts[c.lowercaseChar()] = wordCharCounts[c.lowercaseChar()]!! - 1
-            }
-        }
-    }
-    return misplacedCount
-}
-
-@Composable
-private fun CongratulationDialog(onMainMenu: () -> Unit, onNext: () -> Unit) {
-    Dialog(onDismissRequest = {}) {
-        Surface(
-            shape = RoundedCornerShape(5.dp),
-            color = MaterialTheme.colorScheme.surface,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = stringResource(id = R.string.congratulations))
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = stringResource(id = R.string.dialog_congratulations))
-                Spacer(modifier = Modifier.height(24.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Button(
-                        onClick = onMainMenu,
-                        modifier = Modifier
-                            .padding(vertical = 10.dp),
-                        shape = RoundedCornerShape(5.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(text = stringResource(id = R.string.main_menu))
-                    }
-                    Button(
-                        onClick = onNext,
-                        modifier = Modifier
-                            .padding(vertical = 10.dp),
-                        shape = RoundedCornerShape(5.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(text = stringResource(id = R.string.next))
-                    }
-                }
-            }
-        }
-    }
-}
-@Composable
-private fun FailureDialog(onRetry: () -> Unit, onMainMenu: () -> Unit) {
-    Dialog(onDismissRequest = {}) {
-        Surface(
-            shape = RoundedCornerShape(8.dp),
-            color = MaterialTheme.colorScheme.surface,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = stringResource(id = R.string.try_again),
-                    fontSize = 24.sp,
-                    color = MaterialTheme.colorScheme.onTertiary
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = stringResource(id = R.string.dialog_failure),
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.onTertiary
-                )
-                Spacer(modifier = Modifier.height(24.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Button(
-                        onClick = onMainMenu,
-                        modifier = Modifier.padding(vertical = 10.dp),
-                        shape = RoundedCornerShape(5.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(text = stringResource(id = R.string.main_menu))
-                    }
-                    Button(
-                        onClick = onRetry,
-                        modifier = Modifier.padding(vertical = 10.dp),
-                        shape = RoundedCornerShape(5.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(text = stringResource(id = R.string.retry))
-                    }
-                }
-            }
-        }
     }
 }

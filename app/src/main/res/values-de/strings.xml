@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="classic">KLASSISCH</string>
+    <string name="classic_description">"Dieser Modus folgt dem traditionellen Wordle-Format, bei dem die Spieler je nach Schwierigkeit versuchen, das versteckte Wort richtig zu erraten. Bei jeder richtigen Vermutung wird die Position der Buchstaben im Wort anhand einer Farbcodierung angezeigt. "</string>
+    <string name="infinite">UNENDLICH</string>
+    <string name="infinite_description">"In diesem Modus können Spieler kontinuierlich Wörter erraten, bis ihnen kein Erfolg mehr gelingt. Die Punktzahl wird mit jedem richtigen Raten addiert und es gibt keine Begrenzung für die Anzahl der Wörter, die Sie erraten können. "</string>
+    <string name="number">"NUMMER "</string>
+    <string name="number_description">"Ähnlich wie Classic Wordle, jedoch ohne farblich hervorgehobene Buchstaben. Stattdessen erhalten die Spieler eine Rückmeldung in Form der Anzahl der richtig erratenen Buchstaben und der Anzahl der richtig platzierten Buchstaben. "</string>
+    <string name="difficulty">SCHWIERIGKEIT</string>
+    <string name="normal">NORMAL</string>
+    <string name="normal_description">"Die Spieler haben sechs Reihen, um das Wort zu erraten, ähnlich wie beim klassischen Aufbau. Dieser Modus bietet eine ausgewogene Herausforderung, die für die meisten Spieler geeignet ist. "</string>
+    <string name="hard">HART</string>
+    <string name="hard_description">"Da nur fünf Reihen zum Raten zur Verfügung stehen, erhöht der schwere Modus die Herausforderung, indem er die Anzahl der Versuche reduziert. Um erfolgreich zu sein, müssen die Spieler strategischer und präziser vorgehen. "</string>
+    <string name="extreme">EXTREM</string>
+    <string name="extreme_description">"Der Extremmodus bietet die härteste Herausforderung mit nur vier Reihen zum Raten. Es erfordert Präzision und sorgfältige Schlussfolgerung, da die Spieler weniger Versuche haben, das verborgene Wort zu entschlüsseln. "</string>
+    <string name="start_game">"SPIEL BEGINNEN "</string>
+    <string name="congratulations">Glückwunsch!</string>
+    <string name="dialog_congratulations">"Du hast das Wort richtig erraten! "</string>
+    <string name="next">NÄCHSTE</string>
+    <string name="try_again">"Versuchen Sie es erneut! "</string>
+    <string name="dialog_failure">"Du hast das Wort nicht erraten. Viel Glück beim nächsten Mal! "</string>
+    <string name="retry">WIEDERHOLEN</string>
+    <string name="main_menu">HAUPTMENÜ</string>
+    <string name="play">SPIELEN</string>
+    <string name="how_to_play">SPIELANLEITUNG</string>
+    <string name="settings">"EINSTELLUNGEN "</string>
+    <string name="game_mode">SPIELMODUS</string>
+    <string name="dark_theme">"DUNKLES THEMA "</string>
+    <string name="language">SPRACHE</string>
+    <string name="enable_notifications">"BENACHRICHTIGUNGEN AKTIVIEREN "</string>
+    <string name="reset_highscore">"HIGH SCORE ZURÜCKSETZEN "</string>
+    <string name="clear_progress">"Dadurch werden alle Ihre Fortschritte und Punkte gelöscht. "</string>
+    <string name="reset">ZURÜCKSETZEN</string>
+    <string name="reset_progress">"Sind Sie sicher, dass Sie Ihren gesamten Fortschritt zurücksetzen möchten? "</string>
+    <string name="cancel">STORNIEREN</string>
+    <string name="yes">JA</string>
+</resources>
