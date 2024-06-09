@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="classic">CLÁSICA</string>
     <string name="classic_description">Este modo sigue el formato tradicional de Wordle en el que los jugadores intentan, según la dificultad, adivinar correctamente la palabra oculta. Cada suposición correcta revela la posición de las letras en la palabra con un código de colores.</string>
     <string name="infinite">INFINITO</string>
     <string name="infinite_description">En este modo, los jugadores pueden seguir adivinando palabras continuamente hasta que no lo logran. La puntuación se acumula con cada respuesta correcta y no hay límite para la cantidad de palabras que puedes adivinar.</string>
     <string name="number">NÚMERO</string>
     <string name="number_description">Similar al Wordle clásico, pero sin letras resaltadas en color. En cambio, los jugadores reciben retroalimentación en forma de la cantidad de letras adivinadas correctamente y la cantidad de esas letras colocadas correctamente.</string>
-
     <string name="difficulty">DIFICULTAD</string>
     <string name="normal">NORMAL</string>
     <string name="normal_description">Los jugadores tienen seis filas para adivinar la palabra, similar a la configuración Clásica. Este modo ofrece un desafío equilibrado adecuado para la mayoría de los jugadores.</string>
@@ -16,22 +14,17 @@
     <string name="extreme">EXTREMO</string>
     <string name="extreme_description">El modo extremo ofrece el desafío más difícil con sólo cuatro filas para adivinar. Exige precisión y deducción cuidadosa, ya que los jugadores tienen menos intentos de descifrar la palabra oculta.</string>
     <string name="start_game">EMPEZAR JUEGO</string>
-
     <string name="congratulations">¡Felicidades!</string>
     <string name="dialog_congratulations">¡Adivinaste la palabra correctamente!</string>
     <string name="next">PRÓXIMO</string>
-
     <string name="try_again">¡Intentar otra vez!</string>
     <string name="dialog_failure">No adivinaste la palabra. ¡Mejor suerte la próxima vez!</string>
     <string name="retry">REVER</string>
-
     <string name="main_menu">MENÚ</string>
     <string name="play">JUGAR</string>
     <string name="how_to_play">CÓMO JUGAR</string>
     <string name="settings">AJUSTES</string>
-
     <string name="game_mode">MODO DE JUEGO</string>
-
     <string name="dark_theme">TEMA OSCURO</string>
     <string name="language">IDIOMA</string>
     <string name="enable_notifications">PERMITIR NOTIFICACIONES</string>
@@ -41,4 +34,6 @@
     <string name="reset_progress">¿Estás seguro de que quieres restablecer todo tu progreso?</string>
     <string name="cancel">CANCELAR</string>
     <string name="yes">SÍ</string>
+    <string name="notification1">"¡Es hora de jugar a Wordle! "</string>
+    <string name="notification2">"Ha pasado un tiempo desde la última vez que jugaste a Wordle. ¡Ven y desafíate a ti mismo! "</string>
 </resources>

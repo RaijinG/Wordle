@@ -34,4 +34,6 @@
     <string name="reset_progress">"Sind Sie sicher, dass Sie Ihren gesamten Fortschritt zurücksetzen möchten? "</string>
     <string name="cancel">STORNIEREN</string>
     <string name="yes">JA</string>
+    <string name="notification1">"Zeit, Wordle zu spielen! "</string>
+    <string name="notification2">"Es ist schon eine Weile her, seit Sie Wordle das letzte Mal gespielt haben. Kommen Sie und fordern Sie sich selbst heraus! "</string>
 </resources>

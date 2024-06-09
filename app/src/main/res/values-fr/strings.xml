@@ -34,4 +34,6 @@
     <string name="reset_progress">"Êtes-vous sûr de vouloir réinitialiser toute votre progression ? "</string>
     <string name="cancel">ANNULER</string>
     <string name="yes">OUI</string>
+    <string name="notification1">"Il est temps de jouer à Wordle ! "</string>
+    <string name="notification2">"Cela fait un moment que vous n'avez pas joué à Wordle. Venez vous mettre au défi ! "</string>
 </resources>

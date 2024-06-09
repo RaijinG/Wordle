@@ -246,17 +246,9 @@ fun FailureDialog(onRetry: () -> Unit, onMainMenu: () -> Unit) {
                 modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = stringResource(id = R.string.try_again),
-                    fontSize = 24.sp,
-                    color = MaterialTheme.colorScheme.onTertiary
-                )
+                Text(text = stringResource(id = R.string.try_again))
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = stringResource(id = R.string.dialog_failure),
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.onTertiary
-                )
+                Text(text = stringResource(id = R.string.dialog_failure))
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),

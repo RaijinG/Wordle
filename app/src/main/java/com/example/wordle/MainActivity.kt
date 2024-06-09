@@ -1,5 +1,9 @@
 package com.example.wordle
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,6 +18,7 @@ import androidx.room.Room
 import com.example.wordle.data.AppDatabase
 import com.example.wordle.data.HighScore
 import com.example.wordle.data.Settings
+import com.example.wordle.notification.NotificationReceiver
 import com.example.wordle.screens.GameModeSelection
 import com.example.wordle.screens.HowToPlayDisplay
 import com.example.wordle.screens.MainPage
@@ -51,10 +56,12 @@ class MainActivity : ComponentActivity() {
             config.setLocale(locale)
             resources.updateConfiguration(config, resources.displayMetrics)
         }
+
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "wordle-database-v2"
         ).build()
+
         lifecycleScope.launch {
             currentHighScore = retrieveHighScore()
             val settings = retrieveSettings()
@@ -64,15 +71,16 @@ class MainActivity : ComponentActivity() {
             areNotificationsEnabled = settings.areNotificationsEnabled
         }
 
-
         setContent {
             WordleTheme(darkTheme = isDarkTheme) {
                 val navController = rememberNavController()
 
                 if (showResetDialog) {
                     ResetGameDataDialog(
-                        onConfirm = { resetGameData()
-                            showResetDialog = false},
+                        onConfirm = {
+                            resetGameData()
+                            showResetDialog = false
+                        },
                         onCancel = { showResetDialog = false }
                     )
                 }
@@ -191,6 +199,25 @@ class MainActivity : ComponentActivity() {
             db.highScoreDao().insertHighScore(HighScore(score = 0))
             currentHighScore = 0
         }
+    }
+    override fun onStop() {
+        super.onStop()
+        if (areNotificationsEnabled) {
+            scheduleNotification()
+        }
+    }
+    private fun scheduleNotification() {
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, NotificationReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val triggerAtMillis = System.currentTimeMillis() + AlarmManager.INTERVAL_DAY
+
+        alarmManager.set(
+            AlarmManager.RTC_WAKEUP,
+            triggerAtMillis,
+            pendingIntent
+        )
     }
 }
 

@@ -45,4 +45,7 @@
     <string name="yes">YES</string>
     <string name="try_again">Try Again!</string>
     <string name="language">LANGUAGE</string>
+
+    <string name="notification1">Time to Play Wordle!</string>
+    <string name="notification2">Its been a while since you last played Wordle. Come and challenge yourself!</string>
 </resources>
