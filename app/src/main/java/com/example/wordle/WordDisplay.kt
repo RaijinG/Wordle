@@ -1,14 +1,10 @@
 package com.example.wordle
 
-import HeaderDifficulty
-import HeaderGamemode
-import android.content.res.Resources
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,8 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
-import java.io.BufferedReader
-import java.io.InputStreamReader
 
 @Composable
 fun WordDisplay(word: String,
@@ -46,7 +40,9 @@ fun WordDisplay(word: String,
                 difficulty: String,
                 navController: NavController,
                 modifier: Modifier = Modifier,
-                initialScore: Int = 0) {
+                initialScore: Int = 0,
+                highScore: Int,
+                saveHighScore: (Int) -> Unit) {
     val maxGuesses = when (difficulty) {
         stringResource(id = R.string.hard) -> 5
         stringResource(id = R.string.extreme) -> 4
@@ -72,7 +68,7 @@ fun WordDisplay(word: String,
     val context = LocalContext.current
 
     Surface(
-        color = Color(0xFF545454),
+        color = MaterialTheme.colorScheme.background,
         modifier = modifier.fillMaxSize()
     ) {
         Column(
@@ -92,13 +88,16 @@ fun WordDisplay(word: String,
                         .padding(vertical = 8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    HeaderGamemode(text = gameMode)
-                    HeaderDifficulty(text = difficulty)
+                    HeaderText(text = gameMode,
+                        colors = listOf(Color(0xFF32f0ef), MaterialTheme.colorScheme.background))
+                    HeaderText(text = difficulty,
+                        colors = listOf(MaterialTheme.colorScheme.background, Color(0xFFfa0907)))
                 }
 
                 Spacer(modifier = Modifier.height(5.dp))
                 if (gameMode == infiniteGameMode) {
                     Text(text = "Score: $score", color = Color.White, fontSize = 24.sp)
+                    Text(text = "High Score: $highScore", color = Color.White, fontSize = 24.sp)
                 }
                 Spacer(modifier = Modifier.height(5.dp))
 
@@ -179,8 +178,10 @@ fun WordDisplay(word: String,
                                 val unusedRows = guesses.count { it.isEmpty() }
                                 score += 1 + (unusedRows * difficultyMultiplier)
                                 showDialog = true
+                                saveHighScore(score)
                             } else if (!guesses.contains("")) {
                                 showFailureDialog = true
+                                saveHighScore(score)
                             }
 
                             if (gameMode == numberGameMode) {
@@ -251,7 +252,7 @@ private fun countMisplacedLetters(word: String, guess: String): Int {
 }
 
 @Composable
-fun CongratulationDialog(onMainMenu: () -> Unit, onNext: () -> Unit) {
+private fun CongratulationDialog(onMainMenu: () -> Unit, onNext: () -> Unit) {
     Dialog(onDismissRequest = {}) {
         Surface(
             shape = RoundedCornerShape(5.dp),
@@ -276,8 +277,8 @@ fun CongratulationDialog(onMainMenu: () -> Unit, onNext: () -> Unit) {
                             .padding(vertical = 10.dp),
                         shape = RoundedCornerShape(5.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF424141),
-                            contentColor = Color.White
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.tertiary
                         )
                     ) {
                         Text(text = stringResource(id = R.string.main_menu))
@@ -288,8 +289,8 @@ fun CongratulationDialog(onMainMenu: () -> Unit, onNext: () -> Unit) {
                             .padding(vertical = 10.dp),
                         shape = RoundedCornerShape(5.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF424141),
-                            contentColor = Color.White
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.tertiary
                         )
                     ) {
                         Text(text = stringResource(id = R.string.next))
@@ -300,7 +301,7 @@ fun CongratulationDialog(onMainMenu: () -> Unit, onNext: () -> Unit) {
     }
 }
 @Composable
-fun FailureDialog(onRetry: () -> Unit, onMainMenu: () -> Unit) {
+private fun FailureDialog(onRetry: () -> Unit, onMainMenu: () -> Unit) {
     Dialog(onDismissRequest = {}) {
         Surface(
             shape = RoundedCornerShape(8.dp),
@@ -314,13 +315,13 @@ fun FailureDialog(onRetry: () -> Unit, onMainMenu: () -> Unit) {
                 Text(
                     text = stringResource(id = R.string.try_again),
                     fontSize = 24.sp,
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onTertiary
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = stringResource(id = R.string.dialog_failure),
                     fontSize = 18.sp,
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onTertiary
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
@@ -332,8 +333,8 @@ fun FailureDialog(onRetry: () -> Unit, onMainMenu: () -> Unit) {
                         modifier = Modifier.padding(vertical = 10.dp),
                         shape = RoundedCornerShape(5.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF424141),
-                            contentColor = Color.White
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.tertiary
                         )
                     ) {
                         Text(text = stringResource(id = R.string.main_menu))
@@ -343,8 +344,8 @@ fun FailureDialog(onRetry: () -> Unit, onMainMenu: () -> Unit) {
                         modifier = Modifier.padding(vertical = 10.dp),
                         shape = RoundedCornerShape(5.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF424141),
-                            contentColor = Color.White
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.tertiary
                         )
                     ) {
                         Text(text = stringResource(id = R.string.retry))
@@ -353,72 +354,4 @@ fun FailureDialog(onRetry: () -> Unit, onMainMenu: () -> Unit) {
             }
         }
     }
-}
-@Composable
-fun Keyboard(onKeyPressed: (String) -> Unit) {
-    val keys = listOf(
-        "QWERTYUIOP",
-        "ASDFGHJKL",
-        "ZXCVBNM"
-    )
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        for (row in keys) {
-            Row {
-                for (char in row) {
-                    Key(char.toString(), onKeyPressed)
-                }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-        Row {
-            Key(stringResource(id = R.string.delete), onKeyPressed)
-            Key(stringResource(id = R.string.submit), onKeyPressed)
-        }
-    }
-}
-
-@Composable
-fun Key(label: String, onKeyPressed: (String) -> Unit) {
-    val keyWidth = if (label == stringResource(id = R.string.submit) ||
-        label == stringResource(id = R.string.delete)) 110.dp else 34.dp
-    val color = if (label == stringResource(id = R.string.submit)) 0xFF32f0ef
-    else if (label == stringResource(id = R.string.delete)) 0xFFfa0907
-    else 0xFFffffff
-    Button(
-        onClick = { onKeyPressed(label) },
-        modifier = Modifier
-            .padding(2.dp)
-            .width(keyWidth)
-            .height(60.dp),
-        shape = RoundedCornerShape(5.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(color),
-            contentColor = Color.White
-        ),
-        contentPadding = PaddingValues(0.dp)
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = label,
-                fontSize = 22.sp,
-                color = Color.Black
-            )
-        }
-    }
-}
-
-fun readWordsFromFile(resources: Resources): List<String> {
-    val inputStream = resources.openRawResource(R.raw.words)
-    val reader = BufferedReader(InputStreamReader(inputStream))
-    val words = mutableListOf<String>()
-    reader.useLines { lines ->
-        lines.forEach { words.add(it) }
-    }
-    return words
 }

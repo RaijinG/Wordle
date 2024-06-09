@@ -12,12 +12,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,15 +25,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wordle.ui.theme.WordleTheme
 
-//0xFFfa0907 - červená
 @Composable
 fun MainPage(
     onPlayClicked: () -> Unit,
     onHowToPlayClicked: () -> Unit,
+    onSettingsClicked: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Color(0xFF545454)
+        color = MaterialTheme.colorScheme.background
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -53,8 +53,8 @@ fun MainPage(
                     .height(50.dp)
                     .fillMaxWidth(0.7f),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF424141),
-                    contentColor = Color(0xFF32f0ef))
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.primary)
             ) {
                 Text(text = stringResource(id = R.string.play), fontSize = 20.sp)
             }
@@ -65,20 +65,20 @@ fun MainPage(
                     .height(50.dp)
                     .fillMaxWidth(0.7f),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF424141),
-                    contentColor = Color(0xFF32f0ef))
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.primary)
             ) {
                 Text(text = stringResource(id = R.string.how_to_play), fontSize = 20.sp)
             }
             Button(
-                onClick = {},
+                onClick = onSettingsClicked,
                 modifier = Modifier
                     .padding(vertical = 20.dp)
                     .height(50.dp)
                     .fillMaxWidth(0.7f),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF424141),
-                    contentColor = Color(0xFF32f0ef))
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.primary)
             ) {
                 Text(text = stringResource(id = R.string.settings), fontSize = 20.sp)
             }
@@ -90,6 +90,6 @@ fun MainPage(
 @Composable
 fun MainPagePreview() {
     WordleTheme {
-        MainPage(onPlayClicked = {}, onHowToPlayClicked = {})
+        MainPage(onPlayClicked = {}, onHowToPlayClicked = {}, onSettingsClicked = {})
     }
 }
