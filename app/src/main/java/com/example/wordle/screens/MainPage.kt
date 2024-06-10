@@ -20,11 +20,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wordle.R
-import com.example.wordle.ui.theme.WordleTheme
 
 @Composable
 fun MainPage(
@@ -84,13 +82,5 @@ fun MainPage(
                 Text(text = stringResource(id = R.string.settings), fontSize = 20.sp)
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainPagePreview() {
-    WordleTheme {
-        MainPage(onPlayClicked = {}, onHowToPlayClicked = {}, onSettingsClicked = {})
     }
 }

@@ -67,7 +67,7 @@ fun SettingsDisplay(
 
 
 @Composable
-fun ThemeSettings(
+private fun ThemeSettings(
     isDarkTheme: Boolean,
     onThemeChange: (Boolean) -> Unit
 ) {
@@ -93,7 +93,7 @@ fun ThemeSettings(
 }
 
 @Composable
-fun LanguageSettings(
+private fun LanguageSettings(
     selectedLanguage: String,
     onLanguageChange: (String) -> Unit
 ) {
@@ -131,7 +131,7 @@ fun LanguageSettings(
 }
 
 @Composable
-fun NotificationSettings(
+private fun NotificationSettings(
     areNotificationsEnabled: Boolean,
     onNotificationsToggle: (Boolean) -> Unit
 ) {
@@ -157,7 +157,7 @@ fun NotificationSettings(
 }
 
 @Composable
-fun ResetGameData(onReset: () -> Unit) {
+private fun ResetGameData(onReset: () -> Unit) {
     val resetHighscoreText = stringResource(id = R.string.reset_highscore)
     val clearProgressText = stringResource(id = R.string.clear_progress)
     val resetButtonText = stringResource(id = R.string.reset)

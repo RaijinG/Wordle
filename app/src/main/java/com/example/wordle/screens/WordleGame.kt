@@ -85,7 +85,6 @@ fun WordDisplay(word: String,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
-                Text(text = "Word: $word", color = Color.White)
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -98,7 +97,7 @@ fun WordDisplay(word: String,
                         colors = listOf(MaterialTheme.colorScheme.background, Color(0xFFfa0907)))
                 }
 
-                Spacer(modifier = Modifier.height(5.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 if (gameMode == infiniteGameMode) {
                     Text(
                         text = "${stringResource(id = R.string.score)}: $score",
@@ -108,6 +107,7 @@ fun WordDisplay(word: String,
                         text = "${stringResource(id = R.string.high_score)}: $highScore",
                         color = MaterialTheme.colorScheme.tertiary,
                         fontSize = 24.sp)
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
                 Spacer(modifier = Modifier.height(5.dp))
 

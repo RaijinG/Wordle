@@ -63,7 +63,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     // viewmodel + lifecycle
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.2")
     // navigation
     implementation("androidx.navigation:navigation-compose:2.7.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")

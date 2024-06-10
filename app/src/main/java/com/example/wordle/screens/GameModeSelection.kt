@@ -111,12 +111,12 @@ fun GameModeSelection(
                             selected = selectedDifficulty == difficulty,
                             onClick = { selectedDifficulty = difficulty },
                             colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary,
-                                unselectedColor = MaterialTheme.colorScheme.tertiary)
+                                unselectedColor = MaterialTheme.colorScheme.tertiary),
+                            modifier = Modifier.padding(horizontal = 70.dp)
                         )
                         Text(
                             text = stringResource(id = difficulty),
                             color = MaterialTheme.colorScheme.tertiary,
-                            modifier = Modifier.padding(start = 8.dp)
                         )
                     }
                 }

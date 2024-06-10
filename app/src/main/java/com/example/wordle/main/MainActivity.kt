@@ -1,4 +1,4 @@
-package com.example.wordle
+package com.example.wordle.main
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
+import com.example.wordle.R
 import com.example.wordle.data.AppDatabase
 import com.example.wordle.data.HighScore
 import com.example.wordle.data.Settings
@@ -116,8 +117,12 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("wordDisplay/{word}?gameMode={gameMode}&difficulty={difficulty}&score={score}") { backStackEntry ->
                         val word = backStackEntry.arguments?.getString("word") ?: ""
-                        val gameMode = backStackEntry.arguments?.getString("gameMode") ?: getString(R.string.classic)
-                        val difficulty = backStackEntry.arguments?.getString("difficulty") ?: getString(R.string.normal)
+                        val gameMode = backStackEntry.arguments?.getString("gameMode") ?: getString(
+                            R.string.classic
+                        )
+                        val difficulty = backStackEntry.arguments?.getString("difficulty") ?: getString(
+                            R.string.normal
+                        )
                         val initialScore = backStackEntry.arguments?.getString("score")?.toIntOrNull() ?: 0
                         val highScore = currentHighScore
                         WordDisplay(word = word,
@@ -165,7 +170,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    fun saveHighScore(newScore: Int) {
+    private fun saveHighScore(newScore: Int) {
         if (newScore > currentHighScore) {
             currentHighScore = newScore
             lifecycleScope.launch(Dispatchers.IO) {
@@ -220,6 +225,3 @@ class MainActivity : ComponentActivity() {
         )
     }
 }
-
-
-
