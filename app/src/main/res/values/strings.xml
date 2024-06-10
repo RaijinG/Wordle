@@ -48,4 +48,7 @@
 
     <string name="notification1">Time to Play Wordle!</string>
     <string name="notification2">Its been a while since you last played Wordle. Come and challenge yourself!</string>
+
+    <string name="score">SCORE</string>
+    <string name="high_score">HIGH SCORE</string>
 </resources>

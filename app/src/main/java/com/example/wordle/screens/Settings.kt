@@ -3,8 +3,10 @@ package com.example.wordle.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -21,8 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.wordle.util.HeaderImage
 import com.example.wordle.R
+import com.example.wordle.util.HeaderImage
 
 @Composable
 fun SettingsDisplay(
@@ -44,15 +46,21 @@ fun SettingsDisplay(
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
+
         ) {
             HeaderImage(id = R.drawable.wordlesettings)
+            Spacer(modifier = Modifier.height(20.dp))
             ThemeSettings(isDarkTheme = isDarkTheme, onThemeChange = onThemeChange)
             LanguageSettings(selectedLanguage = selectedLanguage, onLanguageChange = onLanguageChange)
+            Spacer(modifier = Modifier.height(20.dp))
             NotificationSettings(
                 areNotificationsEnabled = areNotificationsEnabled,
                 onNotificationsToggle = onNotificationsToggle
             )
+            Spacer(modifier = Modifier.height(20.dp))
+
             ResetGameData(onReset = onResetGameData)
+            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }
@@ -150,6 +158,9 @@ fun NotificationSettings(
 
 @Composable
 fun ResetGameData(onReset: () -> Unit) {
+    val resetHighscoreText = stringResource(id = R.string.reset_highscore)
+    val clearProgressText = stringResource(id = R.string.clear_progress)
+    val resetButtonText = stringResource(id = R.string.reset)
     Column(
         modifier = Modifier
             .padding(vertical = 10.dp)
@@ -157,12 +168,12 @@ fun ResetGameData(onReset: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = stringResource(id = R.string.reset_highscore),
+            text = resetHighscoreText,
             color = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Text(
-            text = stringResource(id = R.string.clear_progress),
+            text = clearProgressText,
             color = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -173,7 +184,7 @@ fun ResetGameData(onReset: () -> Unit) {
                 contentColor = MaterialTheme.colorScheme.tertiary
             )
         ) {
-            Text(text = stringResource(id = R.string.reset))
+            Text(text = resetButtonText)
         }
     }
 }

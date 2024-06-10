@@ -144,10 +144,9 @@ fun ResetGameDataDialog(onConfirm: () -> Unit, onCancel: () -> Unit) {
         Surface(
             shape = RoundedCornerShape(5.dp),
             color = MaterialTheme.colorScheme.surface,
-            modifier = Modifier.padding(16.dp)
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(30.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(text = stringResource(id = R.string.reset_progress))
@@ -191,7 +190,6 @@ fun CongratulationDialog(onMainMenu: () -> Unit, onNext: () -> Unit) {
         Surface(
             shape = RoundedCornerShape(5.dp),
             color = MaterialTheme.colorScheme.surface,
-            modifier = Modifier.padding(16.dp)
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
@@ -240,7 +238,6 @@ fun FailureDialog(onRetry: () -> Unit, onMainMenu: () -> Unit) {
         Surface(
             shape = RoundedCornerShape(8.dp),
             color = MaterialTheme.colorScheme.surface,
-            modifier = Modifier.padding(16.dp)
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),

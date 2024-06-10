@@ -100,8 +100,14 @@ fun WordDisplay(word: String,
 
                 Spacer(modifier = Modifier.height(5.dp))
                 if (gameMode == infiniteGameMode) {
-                    Text(text = "Score: $score", color = MaterialTheme.colorScheme.tertiary, fontSize = 24.sp)
-                    Text(text = "High Score: $highScore", color = MaterialTheme.colorScheme.tertiary, fontSize = 24.sp)
+                    Text(
+                        text = "${stringResource(id = R.string.score)}: $score",
+                        color = MaterialTheme.colorScheme.tertiary,
+                        fontSize = 24.sp)
+                    Text(
+                        text = "${stringResource(id = R.string.high_score)}: $highScore",
+                        color = MaterialTheme.colorScheme.tertiary,
+                        fontSize = 24.sp)
                 }
                 Spacer(modifier = Modifier.height(5.dp))
 
@@ -218,7 +224,10 @@ fun WordDisplay(word: String,
             onNext = {
                 val nextScore = if (gameMode == infiniteGameMode) score else 0
                 navController.navigate("wordDisplay/${words.random()}?gameMode=$gameMode&difficulty=$difficulty&score=$nextScore") {
-                    popUpTo("wordDisplay/{word}?gameMode={gameMode}&difficulty={difficulty}") { inclusive = true }
+                    popUpTo("wordDisplay/{word}?gameMode={gameMode}&difficulty={difficulty}&score={score}") {
+                        inclusive = true
+                    }
+                    launchSingleTop = true
                 }
             }
         )

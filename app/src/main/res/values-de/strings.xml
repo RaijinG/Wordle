@@ -20,7 +20,7 @@
     <string name="try_again">"Versuchen Sie es erneut! "</string>
     <string name="dialog_failure">"Du hast das Wort nicht erraten. Viel Glück beim nächsten Mal! "</string>
     <string name="retry">WIEDERHOLEN</string>
-    <string name="main_menu">HAUPTMENÜ</string>
+    <string name="main_menu">MENÜ</string>
     <string name="play">SPIELEN</string>
     <string name="how_to_play">SPIELANLEITUNG</string>
     <string name="settings">"EINSTELLUNGEN "</string>
@@ -36,4 +36,6 @@
     <string name="yes">JA</string>
     <string name="notification1">"Zeit, Wordle zu spielen! "</string>
     <string name="notification2">"Es ist schon eine Weile her, seit Sie Wordle das letzte Mal gespielt haben. Kommen Sie und fordern Sie sich selbst heraus! "</string>
+    <string name="high_score">HIGHSCORE</string>
+    <string name="score">PUNKTZAHL</string>
 </resources>

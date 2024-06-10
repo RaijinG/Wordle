@@ -36,4 +36,6 @@
     <string name="yes">OUI</string>
     <string name="notification1">"Il est temps de jouer à Wordle ! "</string>
     <string name="notification2">"Cela fait un moment que vous n'avez pas joué à Wordle. Venez vous mettre au défi ! "</string>
+    <string name="high_score">SCORE ÉLEVÉ</string>
+    <string name="score">SCORE</string>
 </resources>
