@@ -24,6 +24,11 @@ private val LightColorPalette = lightColorScheme(
     onTertiary = Color.White,
     background = Color(0xFFABA7A7)
 )
+/**
+ * Composable function that applies the Wordle theme to its content.
+ * @param darkTheme Indicates whether the dark theme is enabled. Defaults to system setting.
+ * @param content The content to which the theme will be applied.
+ */
 @Composable
 fun WordleTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -34,7 +39,6 @@ fun WordleTheme(
     } else {
         LightColorPalette
     }
-
     MaterialTheme(
         colorScheme = colors,
         content = content

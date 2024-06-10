@@ -18,6 +18,10 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +30,16 @@ import androidx.compose.ui.unit.dp
 import com.example.wordle.R
 import com.example.wordle.util.HeaderImage
 
+/**
+ * Composable function that displays the settings screen.
+ * @param isDarkTheme Indicates whether the dark theme is enabled.
+ * @param onThemeChange Callback function invoked when the theme is changed.
+ * @param selectedLanguage The currently selected language.
+ * @param onLanguageChange Callback function invoked when the language is changed.
+ * @param areNotificationsEnabled Indicates whether notifications are enabled.
+ * @param onNotificationsToggle Callback function invoked when the notification setting is toggled.
+ * @param onResetGameData Callback function invoked when the game data is reset.
+ */
 @Composable
 fun SettingsDisplay(
     isDarkTheme: Boolean,
@@ -36,6 +50,8 @@ fun SettingsDisplay(
     onNotificationsToggle: (Boolean) -> Unit,
     onResetGameData: () -> Unit,
 ) {
+    var showResetDialog by remember { mutableStateOf(false) }
+
     Surface(
         color = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize()
@@ -46,7 +62,6 @@ fun SettingsDisplay(
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
-
         ) {
             HeaderImage(id = R.drawable.wordlesettings)
             Spacer(modifier = Modifier.height(20.dp))
@@ -64,8 +79,11 @@ fun SettingsDisplay(
         }
     }
 }
-
-
+/**
+ * Composable function that displays the theme settings.
+ * @param isDarkTheme Indicates whether the dark theme is enabled.
+ * @param onThemeChange Callback function invoked when the theme is changed.
+ */
 @Composable
 private fun ThemeSettings(
     isDarkTheme: Boolean,
@@ -91,7 +109,11 @@ private fun ThemeSettings(
         )
     }
 }
-
+/**
+ * Composable function that displays the language settings.
+ * @param selectedLanguage The currently selected language.
+ * @param onLanguageChange Callback function invoked when the language is changed.
+ */
 @Composable
 private fun LanguageSettings(
     selectedLanguage: String,
@@ -129,7 +151,11 @@ private fun LanguageSettings(
         }
     }
 }
-
+/**
+ * Composable function that displays the notification settings.
+ * @param areNotificationsEnabled Indicates whether notifications are enabled.
+ * @param onNotificationsToggle Callback function invoked when the notification setting is toggled.
+ */
 @Composable
 private fun NotificationSettings(
     areNotificationsEnabled: Boolean,
@@ -155,7 +181,10 @@ private fun NotificationSettings(
         )
     }
 }
-
+/**
+ * Composable function that displays the reset game data option.
+ * @param onReset Callback function invoked when the reset button is clicked.
+ */
 @Composable
 private fun ResetGameData(onReset: () -> Unit) {
     val resetHighscoreText = stringResource(id = R.string.reset_highscore)

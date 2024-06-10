@@ -16,7 +16,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.wordle.R
 import kotlinx.coroutines.delay
-
+/**
+ * Composable function that displays the splash screen.
+ * The splash screen shows the logo and navigates to the main page after a delay.
+ * @param navController The NavController used for navigation.
+ */
 @Composable
 fun SplashScreen(navController: NavController) {
     Surface(
@@ -35,7 +39,7 @@ fun SplashScreen(navController: NavController) {
             )
         }
     }
-
+// Launches a coroutine when the composable enters the composition
     LaunchedEffect(Unit) {
         delay(2000)
         navController.navigate("mainPage") {

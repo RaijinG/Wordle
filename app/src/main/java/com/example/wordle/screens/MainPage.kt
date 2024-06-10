@@ -23,7 +23,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wordle.R
-
+/**
+ * Composable function that displays the main page of the application.
+ * @param onPlayClicked Callback function invoked when the Play button is clicked.
+ * @param onHowToPlayClicked Callback function invoked when the HowToPlay button is clicked.
+ * @param onSettingsClicked Callback function invoked when the Settings button is clicked.
+ */
 @Composable
 fun MainPage(
     onPlayClicked: () -> Unit,

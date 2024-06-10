@@ -37,7 +37,11 @@ import androidx.compose.ui.window.Dialog
 import com.example.wordle.R
 import java.io.BufferedReader
 import java.io.InputStreamReader
-
+/**
+ * Composable function that displays header text with a gradient background.
+ * @param text The text to be displayed.
+ * @param colors The list of colors to be used in the gradient background.
+ */
 @Composable
 fun HeaderText(text: String, colors: List<Color>) {
     Box(
@@ -60,6 +64,11 @@ fun HeaderText(text: String, colors: List<Color>) {
         )
     }
 }
+/**
+ * Composable function that displays a header image.
+ *
+ * @param id The resource ID of the image to be displayed.
+ */
 @Composable
 fun HeaderImage(id: Int) {
     Image(
@@ -70,6 +79,11 @@ fun HeaderImage(id: Int) {
             .size(300.dp)
     )
 }
+/**
+ * Reads a list of words from a raw resource file.
+ * @param resources The resources object to access the raw file.
+ * @return A list of words read from the file.
+ */
 fun readWordsFromFile(resources: Resources): List<String> {
     val inputStream = resources.openRawResource(R.raw.words)
     val reader = BufferedReader(InputStreamReader(inputStream))
@@ -79,6 +93,10 @@ fun readWordsFromFile(resources: Resources): List<String> {
     }
     return words
 }
+/**
+ * Composable function that displays the keyboard for user input.
+ * @param onKeyPressed Callback function invoked when a key is pressed.
+ */
 @Composable
 fun Keyboard(onKeyPressed: (String) -> Unit) {
     val keys = listOf(
@@ -104,7 +122,79 @@ fun Keyboard(onKeyPressed: (String) -> Unit) {
         }
     }
 }
-
+/**
+ * Composable function that displays a customizable dialog.
+ * @param title The title of the dialog.
+ * @param message The message to be displayed in the dialog.
+ * @param confirmButtonText The text to be displayed on the confirm button.
+ * @param onConfirm Callback function invoked when the confirm button is pressed.
+ * @param dismissButtonText The text to be displayed on the dismiss button. Defaults to null.
+ * @param onDismiss Callback function invoked when the dismiss button is pressed. Defaults to null.
+ * @param onDismissRequest Callback function invoked when the dialog is dismissed.
+ */
+@Composable
+fun CustomDialog(
+    title: String,
+    message: String,
+    confirmButtonText: String,
+    onConfirm: () -> Unit,
+    dismissButtonText: String? = null,
+    onDismiss: (() -> Unit)? = null,
+    onDismissRequest: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismissRequest) {
+        Surface(
+            shape = RoundedCornerShape(8.dp),
+            color = MaterialTheme.colorScheme.surface,
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = message)
+                Spacer(modifier = Modifier.height(24.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    dismissButtonText?.let {
+                        Button(
+                            onClick = onDismiss ?: onDismissRequest,
+                            modifier = Modifier
+                                .padding(vertical = 10.dp),
+                            shape = RoundedCornerShape(5.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.secondary,
+                                contentColor = MaterialTheme.colorScheme.tertiary
+                            )
+                        ) {
+                            Text(text = it)
+                        }
+                    }
+                    Button(
+                        onClick = onConfirm,
+                        modifier = Modifier
+                            .padding(vertical = 10.dp),
+                        shape = RoundedCornerShape(5.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.tertiary
+                        )
+                    ) {
+                        Text(text = confirmButtonText)
+                    }
+                }
+            }
+        }
+    }
+}
+/**
+ * Composable function that displays a key in the keyboard.
+ * @param label The label of the key.
+ * @param onKeyPressed Callback function invoked when the key is pressed.
+ */
 @Composable
 fun Key(label: String, onKeyPressed: (String) -> Unit) {
     val keyWidth = if (label == stringResource(id = R.string.submit) ||
@@ -138,150 +228,21 @@ fun Key(label: String, onKeyPressed: (String) -> Unit) {
         }
     }
 }
-@Composable
-fun ResetGameDataDialog(onConfirm: () -> Unit, onCancel: () -> Unit) {
-    Dialog(onDismissRequest = { onCancel() }) {
-        Surface(
-            shape = RoundedCornerShape(5.dp),
-            color = MaterialTheme.colorScheme.surface,
-        ) {
-            Column(
-                modifier = Modifier.padding(30.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = stringResource(id = R.string.reset_progress))
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Button(
-                        onClick = onCancel,
-                        modifier = Modifier
-                            .padding(vertical = 10.dp),
-                        shape = RoundedCornerShape(5.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(text = stringResource(id = R.string.cancel))
-                    }
-                    Button(
-                        onClick = onConfirm,
-                        modifier = Modifier
-                            .padding(vertical = 10.dp),
-                        shape = RoundedCornerShape(5.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(text = stringResource(id = R.string.yes))
-                    }
-                }
-            }
-        }
-    }
-}
-@Composable
-fun CongratulationDialog(onMainMenu: () -> Unit, onNext: () -> Unit) {
-    Dialog(onDismissRequest = {}) {
-        Surface(
-            shape = RoundedCornerShape(5.dp),
-            color = MaterialTheme.colorScheme.surface,
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = stringResource(id = R.string.congratulations))
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = stringResource(id = R.string.dialog_congratulations))
-                Spacer(modifier = Modifier.height(24.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Button(
-                        onClick = onMainMenu,
-                        modifier = Modifier
-                            .padding(vertical = 10.dp),
-                        shape = RoundedCornerShape(5.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(text = stringResource(id = R.string.main_menu))
-                    }
-                    Button(
-                        onClick = onNext,
-                        modifier = Modifier
-                            .padding(vertical = 10.dp),
-                        shape = RoundedCornerShape(5.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(text = stringResource(id = R.string.next))
-                    }
-                }
-            }
-        }
-    }
-}
-@Composable
-fun FailureDialog(onRetry: () -> Unit, onMainMenu: () -> Unit) {
-    Dialog(onDismissRequest = {}) {
-        Surface(
-            shape = RoundedCornerShape(8.dp),
-            color = MaterialTheme.colorScheme.surface,
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = stringResource(id = R.string.try_again))
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = stringResource(id = R.string.dialog_failure))
-                Spacer(modifier = Modifier.height(24.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Button(
-                        onClick = onMainMenu,
-                        modifier = Modifier.padding(vertical = 10.dp),
-                        shape = RoundedCornerShape(5.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(text = stringResource(id = R.string.main_menu))
-                    }
-                    Button(
-                        onClick = onRetry,
-                        modifier = Modifier.padding(vertical = 10.dp),
-                        shape = RoundedCornerShape(5.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(text = stringResource(id = R.string.retry))
-                    }
-                }
-            }
-        }
-    }
-}
+/**
+ * Counts the number of characters in the correct positions.
+ * @param word The target word.
+ * @param guess The guessed word.
+ * @return The number of characters in the correct positions.
+ */
 fun countCorrectPositions(word: String, guess: String): Int {
     return guess.indices.count { index -> word.getOrNull(index)?.equals(guess[index], ignoreCase = true) == true }
 }
-
+/**
+ * Counts the number of misplaced characters.
+ * @param word The target word.
+ * @param guess The guessed word.
+ * @return The number of misplaced characters.
+ */
 fun countMisplacedLetters(word: String, guess: String): Int {
     val wordCharCounts = word.groupBy { it }.mapValues { it.value.size }.toMutableMap()
     var misplacedCount = 0

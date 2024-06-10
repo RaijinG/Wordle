@@ -30,23 +30,35 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.wordle.R
-import com.example.wordle.util.CongratulationDialog
-import com.example.wordle.util.FailureDialog
+import com.example.wordle.util.CustomDialog
 import com.example.wordle.util.HeaderText
 import com.example.wordle.util.Keyboard
 import com.example.wordle.util.countCorrectPositions
 import com.example.wordle.util.countMisplacedLetters
 import com.example.wordle.util.readWordsFromFile
 
+/**
+ * Composable function that displays the Wordle game board.
+ * @param word The word to be guessed.
+ * @param gameMode The selected game mode.
+ * @param difficulty The selected difficulty level.
+ * @param navController The NavController used for navigation.
+ * @param modifier The Modifier to be applied to the layout.
+ * @param initialScore The initial score for the game. Defaults to 0.
+ * @param highScore The current high score.
+ * @param saveHighScore Callback function to save the high score.
+ */
 @Composable
-fun WordDisplay(word: String,
-                gameMode: String,
-                difficulty: String,
-                navController: NavController,
-                modifier: Modifier = Modifier,
-                initialScore: Int = 0,
-                highScore: Int,
-                saveHighScore: (Int) -> Unit) {
+fun WordDisplay(
+    word: String,
+    gameMode: String,
+    difficulty: String,
+    navController: NavController,
+    modifier: Modifier = Modifier,
+    initialScore: Int = 0,
+    highScore: Int,
+    saveHighScore: (Int) -> Unit
+) {
     val maxGuesses = when (difficulty) {
         stringResource(id = R.string.hard) -> 5
         stringResource(id = R.string.extreme) -> 4
@@ -66,6 +78,7 @@ fun WordDisplay(word: String,
     var currentGuess by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     var showFailureDialog by remember { mutableStateOf(false) }
+    var showResetDialog by remember { mutableStateOf(false) }
     var correctPositions by remember { mutableStateOf(List(maxGuesses) { 0 }) }
     var misplacedCounts by remember { mutableStateOf(List(maxGuesses) { 0 }) }
     var score by remember { mutableStateOf(initialScore) }
@@ -219,9 +232,11 @@ fun WordDisplay(word: String,
 
     if (showDialog) {
         val words = remember { readWordsFromFile(context.resources) }
-        CongratulationDialog(
-            onMainMenu = { navController.navigate("mainPage") },
-            onNext = {
+        CustomDialog(
+            title = stringResource(id = R.string.congratulations),
+            message = stringResource(id = R.string.dialog_congratulations),
+            confirmButtonText = stringResource(id = R.string.next),
+            onConfirm = {
                 val nextScore = if (gameMode == infiniteGameMode) score else 0
                 navController.navigate("wordDisplay/${words.random()}?gameMode=$gameMode&difficulty=$difficulty&score=$nextScore") {
                     popUpTo("wordDisplay/{word}?gameMode={gameMode}&difficulty={difficulty}&score={score}") {
@@ -229,18 +244,27 @@ fun WordDisplay(word: String,
                     }
                     launchSingleTop = true
                 }
-            }
+            },
+            dismissButtonText = stringResource(id = R.string.main_menu),
+            onDismiss = { navController.navigate("mainPage") },
+            onDismissRequest = { showDialog = false }
         )
     }
+
     if (showFailureDialog) {
-        FailureDialog(
-            onRetry = {
+        CustomDialog(
+            title = stringResource(id = R.string.try_again),
+            message = stringResource(id = R.string.dialog_failure),
+            confirmButtonText = stringResource(id = R.string.retry),
+            onConfirm = {
                 val words = readWordsFromFile(context.resources)
                 navController.navigate("wordDisplay/${words.random()}?gameMode=$gameMode&difficulty=$difficulty&score=0") {
                     popUpTo("wordDisplay/{word}?gameMode={gameMode}&difficulty={difficulty}") { inclusive = true }
                 }
             },
-            onMainMenu = { navController.navigate("mainPage") }
+            dismissButtonText = stringResource(id = R.string.main_menu),
+            onDismiss = { navController.navigate("mainPage") },
+            onDismissRequest = { showFailureDialog = false }
         )
     }
 }

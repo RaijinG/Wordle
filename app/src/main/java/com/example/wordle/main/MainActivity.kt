@@ -10,6 +10,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,13 +28,17 @@ import com.example.wordle.screens.SettingsDisplay
 import com.example.wordle.screens.SplashScreen
 import com.example.wordle.screens.WordDisplay
 import com.example.wordle.ui.theme.WordleTheme
-import com.example.wordle.util.ResetGameDataDialog
+import com.example.wordle.util.CustomDialog
 import com.example.wordle.util.readWordsFromFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
-
+/**
+ * MainActivity is the entry point of the application. It handles
+ * the main user interface and navigation to other activities. It also
+ * manages the application settings and high scores.
+ */
 class MainActivity : ComponentActivity() {
     private lateinit var db: AppDatabase
     private var currentHighScore by mutableStateOf(0)
@@ -41,10 +46,17 @@ class MainActivity : ComponentActivity() {
     private var selectedLanguage by mutableStateOf("English")
     private var areNotificationsEnabled by mutableStateOf(true)
     private var showResetDialog by mutableStateOf(false)
-
+    /**
+     * Initializes the activity. Sets up the database, retrieves settings,
+     * and configures the navigation.
+     * @param savedInstanceState The saved instance state.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        /**
+         * Updates the application's locale based on the selected language.
+         * @param language The selected language.
+         */
         fun updateLocale(language: String) {
             val locale = when (language) {
                 "Spanish" -> Locale("es")
@@ -77,12 +89,17 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
 
                 if (showResetDialog) {
-                    ResetGameDataDialog(
+                    CustomDialog(
+                        title = stringResource(id = R.string.reset_progress),
+                        message = stringResource(id = R.string.clear_progress),
+                        confirmButtonText = stringResource(id = R.string.yes),
                         onConfirm = {
                             resetGameData()
                             showResetDialog = false
                         },
-                        onCancel = { showResetDialog = false }
+                        dismissButtonText = stringResource(id = R.string.cancel),
+                        onDismiss = { showResetDialog = false },
+                        onDismissRequest = { showResetDialog = false }
                     )
                 }
 
@@ -162,14 +179,20 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
+    /**
+     * Retrieves the highest score from the database.
+     * @return The highest score, or 0 if no score is found.
+     */
     private suspend fun retrieveHighScore(): Int {
         return withContext(Dispatchers.IO) {
             val highScoreEntity = db.highScoreDao().getHighScore()
             highScoreEntity?.score ?: 0
         }
     }
-
+    /**
+     * Saves a new high score to the database if it is higher than the current high score.
+     * @param newScore The new score to be saved.
+     */
     private fun saveHighScore(newScore: Int) {
         if (newScore > currentHighScore) {
             currentHighScore = newScore
@@ -178,13 +201,21 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
+    /**
+     * Retrieves the settings from the database.
+     * @return The Settings object, or default settings if none are found.
+     */
     private suspend fun retrieveSettings(): Settings {
         return withContext(Dispatchers.IO) {
             db.settingsDao().getSettings() ?: Settings()
         }
     }
-
+    /**
+     * Saves the settings to the database.
+     * @param darkTheme The dark theme setting.
+     * @param selectedLanguage The selected language setting.
+     * @param notificationsEnabled The notifications enabled setting.
+     */
     private fun saveSettings(
         darkTheme: Boolean? = null,
         selectedLanguage: String? = null,
@@ -198,19 +229,28 @@ class MainActivity : ComponentActivity() {
             db.settingsDao().insertSettings(currentSettings)
         }
     }
-
+    /**
+     * Resets the high score.
+     */
     private fun resetGameData() {
         lifecycleScope.launch(Dispatchers.IO) {
             db.highScoreDao().insertHighScore(HighScore(score = 0))
             currentHighScore = 0
         }
     }
+    /**
+     * Called when the activity is no longer visible to the user
+     * and checks if notifications are enabled. In that case, schedules the notification.
+     */
     override fun onStop() {
         super.onStop()
         if (areNotificationsEnabled) {
             scheduleNotification()
         }
     }
+    /**
+     * Schedules a notification to be triggered after a day.
+     */
     private fun scheduleNotification() {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, NotificationReceiver::class.java)

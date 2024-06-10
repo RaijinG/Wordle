@@ -8,10 +8,20 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.example.wordle.main.MainActivity
 import com.example.wordle.R
+import com.example.wordle.main.MainActivity
 
+/**
+ * NotificationReceiver handles the reception of broadcast intents for notifications.
+ * It creates and displays a notification when triggered.
+ */
 class NotificationReceiver : BroadcastReceiver() {
+    /**
+     * Called when the BroadcastReceiver receives an Intent broadcast.
+     * This method creates and displays a notification.
+     * @param context The Context in which the receiver is running.
+     * @param intent The Intent being received.
+     */
     override fun onReceive(context: Context, intent: Intent) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 

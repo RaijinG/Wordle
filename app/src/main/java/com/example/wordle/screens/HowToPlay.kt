@@ -19,9 +19,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.wordle.util.HeaderImage
 import com.example.wordle.R
+import com.example.wordle.util.HeaderImage
 
+/**
+ * Composable function that displays the "How to Play" screen.
+ * @param modifier The Modifier to be applied to the layout.
+ */
 @Composable
 fun HowToPlayDisplay(modifier: Modifier = Modifier) {
     Surface(
@@ -44,7 +48,9 @@ fun HowToPlayDisplay(modifier: Modifier = Modifier) {
         }
     }
 }
-
+/**
+ * Composable function that displays the game mode section.
+ */
 @Composable
 private fun GameModeSection() {
     HeaderImage(id = R.drawable.wordlegamemode)
@@ -57,7 +63,9 @@ private fun GameModeSection() {
     TextCard(title = stringResource(id = R.string.number),
         description = stringResource(id = R.string.number_description))
 }
-
+/**
+ * Composable function that displays the difficulty section.
+ */
 @Composable
 private fun DifficultySection() {
     HeaderImage(id = R.drawable.wordledifficulty)
@@ -70,7 +78,11 @@ private fun DifficultySection() {
     TextCard(title = stringResource(id = R.string.extreme),
         description = stringResource(id = R.string.extreme_description))
 }
-
+/**
+ * Composable function that displays a card with a title and description.
+ * @param title The title of the card.
+ * @param description The description of the card.
+ */
 @Composable
 private fun TextCard(title: String, description: String) {
     Card(

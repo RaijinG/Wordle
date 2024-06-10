@@ -25,7 +25,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.wordle.R
 import com.example.wordle.util.HeaderImage
-
+/**
+ * Composable function that displays the game mode selection screen.
+ * @param onGameModeSelected Callback function invoked when a game mode and difficulty are selected.
+ * The callback receives the selected game mode and difficulty as parameters.
+ */
 @Composable
 fun GameModeSelection(
     onGameModeSelected: (String, String) -> Unit
@@ -112,7 +116,7 @@ fun GameModeSelection(
                             onClick = { selectedDifficulty = difficulty },
                             colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary,
                                 unselectedColor = MaterialTheme.colorScheme.tertiary),
-                            modifier = Modifier.padding(horizontal = 70.dp)
+                            modifier = Modifier.padding(start = 105.dp)
                         )
                         Text(
                             text = stringResource(id = difficulty),
