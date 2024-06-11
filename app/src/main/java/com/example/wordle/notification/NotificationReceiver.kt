@@ -36,7 +36,7 @@ class NotificationReceiver : BroadcastReceiver() {
         val notification = NotificationCompat.Builder(context, "CHANNEL_ID")
             .setContentTitle(context.getString(R.string.notification1))
             .setContentText(context.getString(R.string.notification2))
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_launcher_round)
             .setContentIntent(pendingIntent)
             .build()
 

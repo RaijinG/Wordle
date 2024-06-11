@@ -255,7 +255,6 @@ class MainActivity : ComponentActivity() {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, NotificationReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-
         val triggerAtMillis = System.currentTimeMillis() + AlarmManager.INTERVAL_DAY
 
         alarmManager.set(

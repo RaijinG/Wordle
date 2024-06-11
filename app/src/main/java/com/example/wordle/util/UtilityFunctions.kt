@@ -94,35 +94,6 @@ fun readWordsFromFile(resources: Resources): List<String> {
     return words
 }
 /**
- * Composable function that displays the keyboard for user input.
- * @param onKeyPressed Callback function invoked when a key is pressed.
- */
-@Composable
-fun Keyboard(onKeyPressed: (String) -> Unit) {
-    val keys = listOf(
-        "QWERTYUIOP",
-        "ASDFGHJKL",
-        "ZXCVBNM"
-    )
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        for (row in keys) {
-            Row {
-                for (char in row) {
-                    Key(char.toString(), onKeyPressed)
-                }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-        Row {
-            Key(stringResource(id = R.string.delete), onKeyPressed)
-            Key(stringResource(id = R.string.submit), onKeyPressed)
-        }
-    }
-}
-/**
  * Composable function that displays a customizable dialog.
  * @param title The title of the dialog.
  * @param message The message to be displayed in the dialog.
@@ -196,14 +167,19 @@ fun CustomDialog(
  * @param onKeyPressed Callback function invoked when the key is pressed.
  */
 @Composable
-fun Key(label: String, onKeyPressed: (String) -> Unit) {
-    val keyWidth = if (label == stringResource(id = R.string.submit) ||
-        label == stringResource(id = R.string.delete)) 110.dp else 34.dp
-    val color = if (label == stringResource(id = R.string.submit)) Color(0xFF32f0ef)
-    else if (label == stringResource(id = R.string.delete)) Color(0xFFfa0907)
-    else MaterialTheme.colorScheme.onTertiary
-    val color1 = if (label == stringResource(id = R.string.submit) || label == stringResource(id = R.string.delete)) Color.Black
-    else MaterialTheme.colorScheme.tertiary
+private fun Key(label: String, onKeyPressed: (String) -> Unit) {
+    val keyWidth =
+        if (label == stringResource(id = R.string.submit) ||
+        label == stringResource(id = R.string.delete))
+            110.dp else 34.dp
+    val color =
+        if (label == stringResource(id = R.string.submit)) Color(0xFF32f0ef)
+        else if (label == stringResource(id = R.string.delete)) Color(0xFFfa0907)
+        else MaterialTheme.colorScheme.onTertiary
+    val color1 =
+        if (label == stringResource(id = R.string.submit) ||
+            label == stringResource(id = R.string.delete))
+            Color.Black else MaterialTheme.colorScheme.tertiary
     Button(
         onClick = { onKeyPressed(label) },
         modifier = Modifier
@@ -225,6 +201,35 @@ fun Key(label: String, onKeyPressed: (String) -> Unit) {
                 fontSize = 22.sp,
                 color = color1
             )
+        }
+    }
+}
+/**
+ * Composable function that displays the keyboard for user input.
+ * @param onKeyPressed Callback function invoked when a key is pressed.
+ */
+@Composable
+fun Keyboard(onKeyPressed: (String) -> Unit) {
+    val keys = listOf(
+        "QWERTYUIOP",
+        "ASDFGHJKL",
+        "ZXCVBNM"
+    )
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        for (row in keys) {
+            Row {
+                for (char in row) {
+                    Key(char.toString(), onKeyPressed)
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+        Row {
+            Key(stringResource(id = R.string.delete), onKeyPressed)
+            Key(stringResource(id = R.string.submit), onKeyPressed)
         }
     }
 }

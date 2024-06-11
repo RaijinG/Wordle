@@ -78,7 +78,6 @@ fun WordDisplay(
     var currentGuess by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     var showFailureDialog by remember { mutableStateOf(false) }
-    var showResetDialog by remember { mutableStateOf(false) }
     var correctPositions by remember { mutableStateOf(List(maxGuesses) { 0 }) }
     var misplacedCounts by remember { mutableStateOf(List(maxGuesses) { 0 }) }
     var score by remember { mutableStateOf(initialScore) }
@@ -111,6 +110,7 @@ fun WordDisplay(
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
+
                 if (gameMode == infiniteGameMode) {
                     Text(
                         text = "${stringResource(id = R.string.score)}: $score",
@@ -215,7 +215,6 @@ fun WordDisplay(
                                     it[index] = countMisplacedLetters(word, currentGuess)
                                 }
                             }
-
                             currentGuess = ""
                         }
                     } else if (key == deleteString) {
@@ -258,8 +257,11 @@ fun WordDisplay(
             confirmButtonText = stringResource(id = R.string.retry),
             onConfirm = {
                 val words = readWordsFromFile(context.resources)
-                navController.navigate("wordDisplay/${words.random()}?gameMode=$gameMode&difficulty=$difficulty&score=0") {
-                    popUpTo("wordDisplay/{word}?gameMode={gameMode}&difficulty={difficulty}") { inclusive = true }
+                navController.navigate("wordDisplay/${words.random()}?gameMode=$gameMode&difficulty=$difficulty&score=") {
+                    popUpTo("wordDisplay/{word}?gameMode={gameMode}&difficulty={difficulty}&score={score}") {
+                        inclusive = true
+                    }
+                    launchSingleTop = true
                 }
             },
             dismissButtonText = stringResource(id = R.string.main_menu),
